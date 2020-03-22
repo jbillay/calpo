@@ -1,0 +1,20 @@
+{
+  "name": "calpo",
+  "version": "0.0.1",
+  "description": "Calpo Blasting Solution",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbillay/calpo.git"
+  },
+  "author": "Jeremy Billay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jbillay/calpo/issues"
+  },
+  "homepage": "https://github.com/jbillay/calpo#readme",
+  "dependencies": {}
+}
