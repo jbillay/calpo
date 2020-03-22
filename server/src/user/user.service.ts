@@ -7,16 +7,9 @@ import { IUser } from '../interfaces/users'
 @Injectable()
 export class UserService {
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
-    
-    async getAll(): Promise<IUser[]> {
-        const users: IUser[] = await this.userModel.find().exec();
-        console.log(users);
-        return users;
-    }
 
     async getByEmail(email: string): Promise<IUser> {
         const user: IUser = await this.userModel.findOne({ email }).exec();
-        console.log(user);
         return user;
     }
 
