@@ -1,3 +1,4 @@
+import { AuthUserDto } from './dto/auth-user.dot';
 import { UserEntity } from '../user/entities/user.entity';
 import { IUser } from './../interfaces/users';
 import {
@@ -38,7 +39,7 @@ export class AuthController {
   @Post()
   @ApiOperation({ summary: 'Login' })
   @ApiResponse({ status: 403, description: 'Login Failed' })
-  async login(@Body() user: IUser): Promise<UserEntity> {
+  async login(@Body() user: AuthUserDto): Promise<UserEntity> {
     const authUser: IUser = await this.authService.login(
       user.email,
       user.password,

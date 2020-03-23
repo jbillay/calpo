@@ -1,3 +1,5 @@
+import { EmailUserDto } from './dto/email-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import {
   Controller,
@@ -35,8 +37,8 @@ export class UserController {
     type: User,
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  async create(@Body() user: IUser): Promise<UserEntity> {
-    const createdUser: IUser = await this.userService.create(user);
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
+    const createdUser: IUser = await this.userService.create(createUserDto);
     if (createdUser) {
       const userEntity: UserEntity = new UserEntity({
         id: createdUser.id,
@@ -58,8 +60,8 @@ export class UserController {
     description: 'User info',
     type: User,
   })
-  async getUserByEmail(@Param('email') email): Promise<UserEntity> {
-    const user: IUser = await this.userService.getByEmail(email);
+  async getUserByEmail(@Param() params: EmailUserDto): Promise<UserEntity> {
+    const user: IUser = await this.userService.getByEmail(params.email);
     if (user) {
       const userEntity: UserEntity = new UserEntity({
         id: user.id,
