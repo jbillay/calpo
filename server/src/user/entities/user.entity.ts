@@ -5,9 +5,16 @@ export class UserEntity {
   email: string;
   firstName: string;
   lastName: string;
+  token?: string;
 
   @Exclude()
   password: string;
+
+  @Exclude()
+  iat: string;
+
+  @Exclude()
+  exp: string;
 
   @Expose()
   get fullName(): string {

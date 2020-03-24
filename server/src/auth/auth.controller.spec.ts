@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { Req } from '@nestjs/common';
 
 describe('Auth Controller', () => {
   let authController: AuthController;
@@ -20,7 +21,7 @@ describe('Auth Controller', () => {
 
   describe('auth/me', () => {
     it('should return "Jeremy Billay !"', () => {
-      expect(authController.whoAmI()).toBe('Jeremy Billay !');
+      expect(authController.whoAmI({ user: {} })).toBe('Jeremy Billay !');
     });
   });
 });

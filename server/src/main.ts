@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { readFileSync } from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const httpsOptions = {
@@ -13,6 +14,7 @@ async function bootstrap() {
     httpsOptions,
   });
   app.useGlobalPipes(new ValidationPipe());
+  const configService = app.get(ConfigService);
 
   const options = new DocumentBuilder()
     .setTitle('Calpo API')
@@ -24,7 +26,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
   
-  await app.listen(9615);
+  await app.listen(configService.get('PORT'));
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

@@ -10,6 +10,8 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -18,6 +20,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('auth')
@@ -26,35 +30,37 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('me')
   @ApiResponse({
     status: 200,
     description: 'Who am I',
     type: String,
   })
-  whoAmI(): string {
-    return this.authService.whoAmI();
+  whoAmI(@Request() req): UserEntity {
+    const authUser: UserEntity = new UserEntity(req.user);
+    return authUser;
   }
 
-  @Post()
-  @ApiOperation({ summary: 'Login' })
-  @ApiResponse({ status: 403, description: 'Login Failed' })
-  async login(@Body() user: AuthUserDto): Promise<UserEntity> {
-    const authUser: IUser = await this.authService.login(
-      user.email,
-      user.password,
-    );
-    if (authUser) {
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  @ApiOperation({ summary: 'User login' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async login(@Request() req): Promise<UserEntity> {
+    const token: string = this.authService.login(req.user);
+    if (token) {
       const userEntity: UserEntity = new UserEntity({
-        id: authUser.id,
-        email: authUser.email,
-        firstName: authUser.firstName,
-        lastName: authUser.lastName,
-        password: authUser.password,
+        id: req.user.id,
+        email: req.user.email,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        password: req.user.password,
+        token: token
       });
       return userEntity;
     } else {
-      throw new HttpException('Login Failed', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
+    return;
   }
 }
