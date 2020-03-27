@@ -6,6 +6,7 @@ export class UserEntity {
   firstName: string;
   lastName: string;
   token?: string;
+  picture?: string;
 
   @Exclude()
   password: string;

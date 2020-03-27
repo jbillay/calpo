@@ -55,6 +55,7 @@ export class AuthController {
         firstName: req.user.firstName,
         lastName: req.user.lastName,
         password: req.user.password,
+        picture: req.user.picture,
         token: token
       });
       return userEntity;

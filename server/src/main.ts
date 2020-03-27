@@ -6,6 +6,7 @@ import { readFileSync } from 'fs';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
+  // Setup HTTPS 
   const httpsOptions = {
     key: readFileSync('./cert/key.pem', 'utf8'),
     cert: readFileSync('./cert/server.crt', 'utf8'),
@@ -13,9 +14,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     httpsOptions,
   });
+
+  // Setup validation mechanism for the application 
   app.useGlobalPipes(new ValidationPipe());
+
+  // Setup configuration for env
   const configService = app.get(ConfigService);
 
+  // Swagger configuration
   const options = new DocumentBuilder()
     .setTitle('Calpo API')
     .setDescription('API for Calop Application')
@@ -26,6 +32,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
   
+  // Manage Cors
+  app.enableCors();
+
   await app.listen(configService.get('PORT'));
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

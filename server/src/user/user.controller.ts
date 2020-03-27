@@ -38,18 +38,23 @@ export class UserController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
-    const createdUser: IUser = await this.userService.create(createUserDto);
-    if (createdUser) {
-      const userEntity: UserEntity = new UserEntity({
-        id: createdUser.id,
-        email: createdUser.email,
-        firstName: createdUser.firstName,
-        lastName: createdUser.lastName,
-        password: createdUser.password,
-      });
-      return userEntity;
-    } else {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    try {
+      const createdUser: IUser = await this.userService.create(createUserDto);
+      if (createdUser) {
+        const userEntity: UserEntity = new UserEntity({
+          id: createdUser.id,
+          email: createdUser.email,
+          firstName: createdUser.firstName,
+          lastName: createdUser.lastName,
+          password: createdUser.password,
+          picture: createdUser.picture,
+        });
+        return userEntity;
+      } else {
+        throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      }
+    } catch(e) {
+      throw new HttpException('Bad Request: ' + e, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -69,6 +74,7 @@ export class UserController {
         firstName: user.firstName,
         lastName: user.lastName,
         password: user.password,
+        picture: user.picture,
       });
       return userEntity;
     } else {
