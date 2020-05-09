@@ -5,5 +5,10 @@ export const UserSchema = new mongoose.Schema({
   password: String,
   firstName: String,
   lastName: String,
-  picture: String
+  picture: String,
+  role: {
+    type: String,
+    enum: ['admin', 'user'],
+    default: 'user'
+  }
 }, { timestamps: true });

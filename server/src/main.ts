@@ -8,8 +8,8 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   // Setup HTTPS 
   const httpsOptions = {
-    key: readFileSync('./cert/key.pem', 'utf8'),
-    cert: readFileSync('./cert/server.crt', 'utf8'),
+    key: readFileSync('./cert/localhost.key', 'utf8'),
+    cert: readFileSync('./cert/localhost.crt', 'utf8'),
   };
   const app = await NestFactory.create(AppModule, {
     httpsOptions,

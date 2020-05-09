@@ -48,12 +48,13 @@ export class UserController {
           lastName: createdUser.lastName,
           password: createdUser.password,
           picture: createdUser.picture,
+          role: createdUser.role,
         });
         return userEntity;
       } else {
         throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
       }
-    } catch(e) {
+    } catch (e) {
       throw new HttpException('Bad Request: ' + e, HttpStatus.BAD_REQUEST);
     }
   }
@@ -75,6 +76,7 @@ export class UserController {
         lastName: user.lastName,
         password: user.password,
         picture: user.picture,
+        role: user.role,
       });
       return userEntity;
     } else {

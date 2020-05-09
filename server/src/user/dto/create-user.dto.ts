@@ -15,4 +15,6 @@ export class CreateUserDto {
   
   @IsString()
   readonly lastName: string;
+
+  readonly role: string;
 }

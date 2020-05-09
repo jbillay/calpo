@@ -16,4 +16,6 @@ export class User {
   @ApiProperty({ example: 'Jeremy Billay', description: 'User full name' })
   fullName: string;
 
+  @ApiProperty({ example: 'user', description: 'User role' })
+  role: string;
 }
